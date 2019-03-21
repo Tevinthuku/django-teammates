@@ -18,4 +18,5 @@ class TeamSerializers(serializers.ModelSerializer):
             "id",
             "name",
             "email",
+            "slackhandle"
         ]
