@@ -23,3 +23,32 @@ class TeammatesTestClass(APITestCase):
         """
         response = self.client.get("/team/all/", format='json')
         self.assertEqual(response.data, {'status': 200, 'data': []})
+
+    def test_posting_a_teammate(self):
+        """
+            test posting a teammate in the right format
+        """
+        response = self.client.post(
+            '/team/all/', {'name': 'New Name',
+                           'email': 'newteammate@gmail.com',
+                           'slackhandle': '@NewTeam'},
+            format='json')
+        self.assertEqual(response.data, {'status': 201,
+                                         "data": {'id': 1, 'name': 'New Name',
+                                                  'email': 'newteammate@gmail.com',
+                                                  'slackhandle': '@NewTeam'}})
+
+    def test_posting_teammate_with_wrong_email_format(self):
+        """
+            test posting a teammate with the wrong email format
+        """
+        response = self.client.post(
+            '/team/all/', {'name': 'New Name',
+                           'email': 'newteammail.com',
+                           'slackhandle': '@NewTeam'},
+            format='json')
+        self.assertEqual(response.data, {
+            "email": [
+                "Enter a valid email address."
+            ]
+        })

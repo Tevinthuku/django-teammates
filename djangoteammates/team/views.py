@@ -27,3 +27,13 @@ class TeamMatesView(mixins.CreateModelMixin, generics.ListAPIView):
             This function is responsible for creating a new teammate member
         """
         return self.create(request, *args, **kwargs)
+
+    def create(self, request, *args, **kwargs):
+        """
+            custom create function with custom response
+        """
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response(data={"data": serializer.data, "status": 201}, status=201, headers=headers)
