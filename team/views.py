@@ -1,13 +1,13 @@
 """
 This is the team views file
 """
-from rest_framework import generics, mixins
+from rest_framework import generics
 from rest_framework.response import Response
 from .serializer import TeamSerializers
 from .models import Team
 
 
-class TeamMatesView(mixins.CreateModelMixin, generics.ListAPIView):
+class TeamMatesView(generics.ListCreateAPIView):
     """
         This is the TeammatesView Class
     """
@@ -21,12 +21,6 @@ class TeamMatesView(mixins.CreateModelMixin, generics.ListAPIView):
             query_set = query_set.filter(name__icontains=query)
 
         return Response(data={"data": query_set.serialize(), "status": 200}, status=200)
-
-    def post(self, request, *args, **kwargs):
-        """
-            This function is responsible for creating a new teammate member
-        """
-        return self.create(request, *args, **kwargs)
 
     def create(self, request, *args, **kwargs):
         """
